@@ -1,13 +1,33 @@
-import React from "react";
-import { Box, Heading, Container, VStack, SimpleGrid, Badge, Text, Button, Divider } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Box, Heading, Container, VStack, SimpleGrid, Badge, Text, Button, Divider, Input } from "@chakra-ui/react";
 import GoogleMapEmbed from "../components/GoogleMapEmbed";
 import { FaMapMarkerAlt, FaHeartbeat, FaUsers, FaSun } from "react-icons/fa";
 
-const WorkerCard = ({ name, status, location, heartbeat, weather }) => {
+const EditableText = ({ text, onSubmit, index }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [value, setValue] = useState(text);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      onSubmit(index, value);
+      setIsEditing(false);
+    }
+  };
+
+  return isEditing ? (
+    <Input value={value} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} onBlur={() => setIsEditing(false)} autoFocus />
+  ) : (
+    <Text onClick={() => setIsEditing(true)} cursor="pointer">
+      {text}
+    </Text>
+  );
+};
+
+const WorkerCard = ({ name, status, location, heartbeat, weather, index, onNameChange }) => {
   return (
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
       <Heading size="md" my={2}>
-        {name}
+        <EditableText text={name} onSubmit={onNameChange} index={index} />
       </Heading>
       <Badge colorScheme={status === "OK" ? "green" : "red"}>{status}</Badge>
       <Box my={3}>
@@ -33,12 +53,16 @@ const WorkerCard = ({ name, status, location, heartbeat, weather }) => {
 };
 
 const Index = () => {
-  // This would be replaced with actual API calls to fetch worker data
-  const workers = [
+  const handleNameChange = (index, newName) => {
+    const updatedWorkers = [...workers];
+    updatedWorkers[index].name = newName;
+    setWorkers(updatedWorkers);
+  };
+
+  const [workers, setWorkers] = useState([
     { name: "John Doe", status: "OK", location: "Zone A", heartbeat: 72, weather: "Sunny" },
     { name: "Jane Smith", status: "OK", location: "Zone B", heartbeat: 75, weather: "Cloudy" },
-    // ... other workers
-  ];
+  ]);
 
   return (
     <Container maxW="container.xl">
@@ -47,7 +71,7 @@ const Index = () => {
         <Divider />
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
           {workers.map((worker, index) => (
-            <WorkerCard key={index} {...worker} />
+            <WorkerCard key={index} {...worker} index={index} onNameChange={handleNameChange} />
           ))}
         </SimpleGrid>
         <Box>
