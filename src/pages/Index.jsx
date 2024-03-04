@@ -58,7 +58,33 @@ const WorkerCard = ({ name, status, location, heartbeat, weather, temperature, i
   );
 };
 
+import { FaPlus } from "react-icons/fa";
+
 const Index = () => {
+  const initialWorkerState = { name: "", status: "OK", location: "", heartbeat: "", weather: "", temperature: "" };
+  const [newWorker, setNewWorker] = useState(initialWorkerState);
+
+  const handleNewWorkerChange = (e) => {
+    const { name, value } = e.target;
+    setNewWorker({ ...newWorker, [name]: value });
+  };
+
+  const addWorker = () => {
+    if (newWorker.name && newWorker.location && newWorker.heartbeat) {
+      setWorkers([...workers, newWorker]);
+      setNewWorker(initialWorkerState);
+    } else {
+      alert("Please fill out all the worker details");
+    }
+  };
+
+  const createTeams = () => {
+    const pairedTeams = [];
+    for (let i = 0; i < workers.length; i += 2) {
+      pairedTeams.push(workers.slice(i, Math.min(i + 2, workers.length)));
+    }
+    setTeams(pairedTeams);
+  };
   const handleNameChange = (index, newName) => {
     const updatedWorkers = [...workers];
     updatedWorkers[index].name = newName;
@@ -71,13 +97,7 @@ const Index = () => {
   ]);
   const [teams, setTeams] = useState([]);
 
-  const createTeams = () => {
-    const pairedTeams = [];
-    for (let i = 0; i < workers.length; i += 2) {
-      pairedTeams.push(workers.slice(i, i + 2));
-    }
-    setTeams(pairedTeams);
-  };
+  // This duplicate declaration of createTeams should be removed.
 
   return (
     <Container maxW="container.xl">
@@ -93,7 +113,22 @@ const Index = () => {
             <WorkerCard key={index} {...worker} index={index} onNameChange={handleNameChange} />
           ))}
         </SimpleGrid>
-        <Box>
+        <Box my={4}>
+          <Heading size="md" mb={4}>
+            Add Worker
+          </Heading>
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+            <Input placeholder="Name" name="name" value={newWorker.name} onChange={handleNewWorkerChange} />
+            <Input placeholder="Location" name="location" value={newWorker.location} onChange={handleNewWorkerChange} />
+            <Input placeholder="Heartbeat" name="heartbeat" type="number" value={newWorker.heartbeat} onChange={handleNewWorkerChange} />
+            <Input placeholder="Weather" name="weather" value={newWorker.weather} onChange={handleNewWorkerChange} />
+            <Input placeholder="Temperature" name="temperature" type="number" value={newWorker.temperature} onChange={handleNewWorkerChange} />
+          </SimpleGrid>
+          <Button leftIcon={<FaPlus />} colorScheme="green" mt={4} onClick={addWorker}>
+            Add Worker
+          </Button>
+        </Box>
+        <Box my={8}>
           <Button leftIcon={<FaUsers />} colorScheme="teal" variant="solid" onClick={createTeams}>
             Create Teams
           </Button>
