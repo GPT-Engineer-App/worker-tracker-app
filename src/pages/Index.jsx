@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Heading, Container, VStack, SimpleGrid, Badge, Text, Button, Divider, Input } from "@chakra-ui/react";
-import GoogleMapEmbed from "../components/GoogleMapEmbed";
+import OpenStreetMapEmbed from "../components/GoogleMapEmbed";
 import { FaMapMarkerAlt, FaHeartbeat, FaUsers, FaSun } from "react-icons/fa";
 
 const EditableText = ({ text, onSubmit, index }) => {
@@ -84,7 +84,7 @@ const Index = () => {
           </Button>
         </Box>
       </VStack>
-      <GoogleMapEmbed location={{ latitude: 40.748817, longitude: -73.985428 }} />
+      <OpenStreetMapEmbed location={{ latitude: 40.748817, longitude: -73.985428 }} />
     </Container>
   );
 };
