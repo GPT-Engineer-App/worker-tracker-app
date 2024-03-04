@@ -141,7 +141,7 @@ const Index = () => {
           ))}
         </Box>
       </VStack>
-      <OpenStreetMapEmbed location={{ latitude: 26.2887, longitude: 50.114 }} />
+      <OpenStreetMapEmbed workers={workers.map((worker) => ({ latitude: worker.latitude, longitude: worker.longitude }))} />
     </Container>
   );
 };
