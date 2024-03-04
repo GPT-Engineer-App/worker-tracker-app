@@ -35,7 +35,7 @@ const WorkerCard = ({ name, status, location, heartbeat, weather, temperature, i
       <Heading size="md" my={2}>
         <EditableText text={name} onSubmit={onNameChange} index={index} />
       </Heading>
-      <Badge colorScheme={status === "OK" ? "green" : "red"}>{status}</Badge>
+      <Badge colorScheme={status === "OK" ? "green" : status === "BT" ? "yellow" : status === "STOP" ? "orange" : status === "EMA" ? "red" : "gray"}>{status}</Badge>
       <Box my={3}>
         <FaMapMarkerAlt />
         <Text display="inline-block" ml={2}>
