@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Heading, Container, VStack, SimpleGrid, Badge, Text, Button, Image, Divider } from "@chakra-ui/react";
+import { Box, Heading, Container, VStack, SimpleGrid, Badge, Text, Button, Divider } from "@chakra-ui/react";
+import GoogleMapEmbed from "../components/GoogleMapEmbed";
 import { FaMapMarkerAlt, FaHeartbeat, FaUsers, FaSun } from "react-icons/fa";
 
 const WorkerCard = ({ name, status, location, heartbeat, weather }) => {
@@ -55,7 +56,7 @@ const Index = () => {
           </Button>
         </Box>
       </VStack>
-      <Image src="https://images.unsplash.com/photo-1577086664693-894d8405334a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHx3b3Jrc2l0ZSUyMG1hcHxlbnwwfHx8fDE3MDk1MzMwMDh8MA&ixlib=rb-4.0.3&q=80&w=1080" />
+      <GoogleMapEmbed location={{ latitude: 40.748817, longitude: -73.985428 }} />
     </Container>
   );
 };
