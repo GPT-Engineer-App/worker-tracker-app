@@ -69,6 +69,15 @@ const Index = () => {
     { name: "John Doe", status: "OK", location: "Zone A", heartbeat: 72, weather: "Sunny", temperature: 22 },
     { name: "Jane Smith", status: "OK", location: "Zone B", heartbeat: 75, weather: "Cloudy", temperature: 18 },
   ]);
+  const [teams, setTeams] = useState([]);
+
+  const createTeams = () => {
+    const pairedTeams = [];
+    for (let i = 0; i < workers.length; i += 2) {
+      pairedTeams.push(workers.slice(i, i + 2));
+    }
+    setTeams(pairedTeams);
+  };
 
   return (
     <Container maxW="container.xl">
@@ -85,9 +94,16 @@ const Index = () => {
           ))}
         </SimpleGrid>
         <Box>
-          <Button leftIcon={<FaUsers />} colorScheme="teal" variant="solid">
+          <Button leftIcon={<FaUsers />} colorScheme="teal" variant="solid" onClick={createTeams}>
             Create Teams
           </Button>
+          {teams.map((team, index) => (
+            <Box key={index} borderWidth="1px" borderRadius="lg" p={4} my={4}>
+              {team.map((member, memberIndex) => (
+                <Text key={memberIndex}>{member.name}</Text>
+              ))}
+            </Box>
+          ))}
         </Box>
       </VStack>
       <OpenStreetMapEmbed location={{ latitude: 40.748817, longitude: -73.985428 }} />
