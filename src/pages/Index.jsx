@@ -3,27 +3,27 @@ import { Box, Heading, Container, VStack, SimpleGrid, Badge, Text, Button, Divid
 import OpenStreetMapEmbed from "../components/GoogleMapEmbed";
 import { FaMapMarkerAlt, FaHeartbeat, FaUsers, FaSun } from "react-icons/fa";
 
-const EditableText = ({ text, onSubmit, index }) => {
+const EditableField = ({ type = "text", value, onValueChange, index, attribute }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [value, setValue] = useState(text);
+  const [fieldValue, setFieldValue] = useState(value);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      onSubmit(index, value);
+      onValueChange(index, attribute, fieldValue);
       setIsEditing(false);
     }
   };
 
   return isEditing ? (
-    <Input value={value} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} onBlur={() => setIsEditing(false)} autoFocus />
+    <Input type={type} value={fieldValue} onChange={(e) => setFieldValue(e.target.value)} onKeyDown={handleKeyDown} onBlur={() => setIsEditing(false)} autoFocus />
   ) : (
-    <Text onClick={() => setIsEditing(true)} cursor="pointer">
-      {text}
+    <Text onClick={() => setIsEditing(true)} cursor="pointer" display="inline-block">
+      {value}
     </Text>
   );
 };
 
-const WorkerCard = ({ name, status, location, heartbeat, weather, temperature, index, onNameChange }) => {
+const WorkerCard = ({ name, status, location, heartbeat, weather, temperature, index, onWorkerChange }) => {
   let weatherColorScheme = "green";
   if (weather === "Stormy" || temperature < 10 || temperature > 30) {
     weatherColorScheme = "red";
@@ -33,7 +33,12 @@ const WorkerCard = ({ name, status, location, heartbeat, weather, temperature, i
   return (
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
       <Heading size="md" my={2}>
-        <EditableText text={name} onSubmit={onNameChange} index={index} />
+        <EditableField type="text" value={name} onValueChange={onWorkerChange} index={index} attribute="name" />
+        <EditableField type="text" value={status} onValueChange={onWorkerChange} index={index} attribute="status" />
+        <EditableField type="text" value={location} onValueChange={onWorkerChange} index={index} attribute="location" />
+        <EditableField type="number" value={heartbeat} onValueChange={onWorkerChange} index={index} attribute="heartbeat" />
+        <EditableField type="text" value={weather} onValueChange={onWorkerChange} index={index} attribute="weather" />
+        <EditableField type="number" value={temperature} onValueChange={onWorkerChange} index={index} attribute="temperature" />
       </Heading>
       <Badge colorScheme={status === "OK" ? "green" : status === "BT" ? "yellow" : status === "STOP" ? "orange" : status === "EMA" ? "red" : "gray"}>{status}</Badge>
       <Box my={3}>
@@ -85,10 +90,8 @@ const Index = () => {
     }
     setTeams(pairedTeams);
   };
-  const handleNameChange = (index, newName) => {
-    const updatedWorkers = [...workers];
-    updatedWorkers[index].name = newName;
-    setWorkers(updatedWorkers);
+  const handleWorkerChange = (index, attribute, newValue) => {
+    setWorkers(workers.map((worker, i) => (i === index ? { ...worker, [attribute]: newValue } : worker)));
   };
 
   const [workers, setWorkers] = useState([
@@ -110,7 +113,7 @@ const Index = () => {
         <Divider />
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
           {workers.map((worker, index) => (
-            <WorkerCard key={index} {...worker} index={index} onNameChange={handleNameChange} />
+            <WorkerCard key={index} {...worker} index={index} onWorkerChange={handleWorkerChange} />
           ))}
         </SimpleGrid>
         <Box my={4}>
