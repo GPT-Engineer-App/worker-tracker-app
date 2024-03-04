@@ -67,9 +67,8 @@ const Index = () => {
   return (
     <Container maxW="container.xl">
       <VStack spacing={4} my={8}>
-        <Heading size="lg" textAlign="center" fontWeight="bold">
-          ProtectME
-        </Heading>
+        <Image src="/assets/logo.png" alt="ProtectME Logo" mx="auto" my={4} />
+        <Heading size="lg" textAlign="center" fontWeight="bold" />
         <Divider />
         <Heading size="xl">Work Site Safety Tracker</Heading>
         <Divider />
