@@ -66,8 +66,12 @@ const Index = () => {
 
   return (
     <Container maxW="container.xl">
-      <VStack spacing={8} my={8}>
-        <Heading>Work Site Safety Tracker</Heading>
+      <VStack spacing={4} my={8}>
+        <Heading size="lg" textAlign="center" fontWeight="bold">
+          ProtectME
+        </Heading>
+        <Divider />
+        <Heading size="xl">Work Site Safety Tracker</Heading>
         <Divider />
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
           {workers.map((worker, index) => (
