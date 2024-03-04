@@ -141,7 +141,7 @@ const Index = () => {
           ))}
         </Box>
       </VStack>
-      <OpenStreetMapEmbed location={{ latitude: 40.748817, longitude: -73.985428 }} />
+      <OpenStreetMapEmbed location={{ latitude: 26.2887, longitude: 50.114 }} />
     </Container>
   );
 };
