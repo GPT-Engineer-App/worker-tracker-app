@@ -23,7 +23,13 @@ const EditableText = ({ text, onSubmit, index }) => {
   );
 };
 
-const WorkerCard = ({ name, status, location, heartbeat, weather, index, onNameChange }) => {
+const WorkerCard = ({ name, status, location, heartbeat, weather, temperature, index, onNameChange }) => {
+  let weatherColorScheme = "green";
+  if (weather === "Stormy" || temperature < 10 || temperature > 30) {
+    weatherColorScheme = "red";
+  } else if (weather === "Cloudy" || weather === "Windy" || weather === "Rainy" || (temperature >= 10 && temperature <= 15) || (temperature >= 25 && temperature <= 30)) {
+    weatherColorScheme = "yellow";
+  }
   return (
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
       <Heading size="md" my={2}>
@@ -42,11 +48,11 @@ const WorkerCard = ({ name, status, location, heartbeat, weather, index, onNameC
           Heartbeat: {heartbeat} bpm
         </Text>
       </Box>
-      <Box my={3}>
+      <Box my={3} display="flex" alignItems="center">
         <FaSun />
-        <Text display="inline-block" ml={2}>
-          Weather: {weather}
-        </Text>
+        <Badge colorScheme={weatherColorScheme} ml={2}>
+          {weather} - {temperature}°C
+        </Badge>
       </Box>
     </Box>
   );
@@ -60,8 +66,8 @@ const Index = () => {
   };
 
   const [workers, setWorkers] = useState([
-    { name: "John Doe", status: "OK", location: "Zone A", heartbeat: 72, weather: "Sunny" },
-    { name: "Jane Smith", status: "OK", location: "Zone B", heartbeat: 75, weather: "Cloudy" },
+    { name: "John Doe", status: "OK", location: "Zone A", heartbeat: 72, weather: "Sunny", temperature: 22 },
+    { name: "Jane Smith", status: "OK", location: "Zone B", heartbeat: 75, weather: "Cloudy", temperature: 18 },
   ]);
 
   return (
